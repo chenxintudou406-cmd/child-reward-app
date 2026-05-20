@@ -1,0 +1,246 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  parent
+}
+
+enum Owner {
+  dad
+  mom
+  pangpang
+  family
+}
+
+enum TaskCycle {
+  daily
+  weekly
+  longTerm
+  active
+}
+
+enum TaskStatus {
+  pending
+  completed
+  skipped
+}
+
+enum PointDirection {
+  income
+  expense
+}
+
+enum RedemptionType {
+  allowance
+  reward
+  plan
+}
+
+enum RedemptionStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+model User {
+  id           String   @id @default(cuid())
+  nickname     String
+  username     String   @unique
+  passwordHash String
+  role         UserRole @default(parent)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions      Session[]
+  dailyCreated  DailyRecord[]       @relation("DailyCreatedBy")
+  dailyUpdated  DailyRecord[]       @relation("DailyUpdatedBy")
+  transactions  PointTransaction[]
+  redemptions   Redemption[]        @relation("RedemptionCreatedBy")
+  confirmations Redemption[]        @relation("RedemptionConfirmedBy")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FamilySettings {
+  id                  String   @id @default("family")
+  monthlyBudgetYuan    Int      @default(600)
+  dailyAllowanceYuan   Int      @default(6)
+  dailyPointFloor      Int      @default(200)
+  dailyPointCap        Int      @default(1000)
+  savingRewardPoints   Int      @default(1000)
+  weeklyReviewWeekday  Int      @default(6)
+  immediateRate        Float    @default(1)
+  plannedRate          Float    @default(1.5)
+  parentPlannedRateMin Float    @default(2)
+  parentPlannedRateMax Float    @default(3)
+  assetImageUrl        String?
+  skinTheme            String   @default("sunny")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model PointRule {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  trigger     String
+  points      Int
+  cap         Int?
+  enabled     Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TaskTemplate {
+  id                 String    @id @default(cuid())
+  type               String
+  title              String
+  owner              Owner     @default(family)
+  cycle              TaskCycle
+  defaultPoints      Int
+  autoShowOnDatePage Boolean   @default(false)
+  allowAdHocReward   Boolean   @default(false)
+  enabled            Boolean   @default(true)
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  instances TaskInstance[]
+}
+
+model TaskInstance {
+  id           String     @id @default(cuid())
+  templateId   String?
+  title        String
+  owner        Owner      @default(family)
+  cycle        TaskCycle
+  points       Int
+  status       TaskStatus @default(pending)
+  targetDate   DateTime?
+  weekStart    DateTime?
+  note         String?
+  settledById  String?
+  settledAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  template TaskTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+}
+
+model DailyRecord {
+  id              String   @id @default(cuid())
+  date            DateTime @unique
+  homeworkStatus  String?
+  previewStatus   String?
+  extraStatus     String?
+  attitudeStatus  String?
+  dynamicNote     String?
+  parentNote      String?
+  settlementNote  String?
+  dailyPoints     Int      @default(0)
+  createdById     String?
+  updatedById     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  createdBy    User?              @relation("DailyCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy    User?              @relation("DailyUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+  transactions PointTransaction[]
+}
+
+model WeeklyReview {
+  id            String   @id @default(cuid())
+  weekStart     DateTime @unique
+  weekEnd       DateTime
+  content       String?
+  strengths     String?
+  improvements  String?
+  nextActions   String?
+  recordingUrl  String?
+  completed     Boolean  @default(false)
+  pointsAwarded Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PointTransaction {
+  id            String         @id @default(cuid())
+  direction     PointDirection
+  points        Int
+  sourceType    String
+  sourceId      String?
+  description   String
+  note          String?
+  operatorId    String?
+  dailyRecordId String?
+  createdAt     DateTime       @default(now())
+
+  operator    User?        @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  dailyRecord DailyRecord? @relation(fields: [dailyRecordId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([sourceType])
+}
+
+model Reward {
+  id             String   @id @default(cuid())
+  name           String
+  imageUrl       String?
+  priceYuan      Int?
+  pointsRequired Int
+  exchangeRate   Float    @default(1.5)
+  enabled        Boolean  @default(true)
+  limitNote      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id                String           @id @default(cuid())
+  type              RedemptionType
+  status            RedemptionStatus @default(pending)
+  title             String
+  amountYuan        Float?
+  pointsCost        Int
+  planText          String?
+  rewardId          String?
+  createdById       String?
+  confirmedById     String?
+  confirmedAt       DateTime?
+  completedOffline  Boolean          @default(false)
+  transactionId     String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  reward      Reward? @relation(fields: [rewardId], references: [id], onDelete: SetNull)
+  createdBy   User?   @relation("RedemptionCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  confirmedBy User?   @relation("RedemptionConfirmedBy", fields: [confirmedById], references: [id], onDelete: SetNull)
+}
+
+model AllowanceLedger {
+  id               String   @id @default(cuid())
+  redemptionId     String?
+  amountYuan       Float
+  pointsCost       Int
+  offlineProcessed Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

@@ -1,0 +1,11 @@
+node_modules
+.next
+.deploy
+.local-preview.json
+*.sqlite
+*.tsbuildinfo
+npm-debug.log*
+.git
+deploy
+pangpang-short-video-sample
+ppt-pangpang-cards

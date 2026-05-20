@@ -1,0 +1,440 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fff3d7;
+  --foreground: #24302d;
+  --park-cream: #fff8e8;
+  --park-yellow: #ffd166;
+  --park-coral: #ff7a6b;
+  --park-mint: #74d7a5;
+  --park-blue: #76b7f2;
+  --park-ink: #24302d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--foreground);
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.32) 0 0.55rem, transparent 0.55rem 1.45rem),
+    linear-gradient(180deg, #fff1cc 0%, #fff9ea 42%, #effff5 100%);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.egg-party-bg {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.egg-party-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(255, 209, 102, 0.2) 0 25%, transparent 25% 50%, rgba(116, 215, 165, 0.18) 50% 75%, transparent 75%),
+    linear-gradient(180deg, rgba(255, 246, 224, 0.95), rgba(239, 255, 245, 0.92));
+  background-size: 5.8rem 5.8rem, auto;
+}
+
+.egg-party-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(90deg, rgba(255, 122, 107, 0.26) 0 0.28rem, transparent 0.28rem),
+    linear-gradient(0deg, rgba(36, 48, 45, 0.08) 0 0.2rem, transparent 0.2rem);
+  background-size: 4.6rem 4.6rem, 4.6rem 4.6rem;
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 85%, transparent);
+}
+
+.egg-card {
+  border: 2px solid rgba(255, 255, 255, 0.96);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.78));
+  box-shadow:
+    0 14px 0 rgba(255, 209, 102, 0.2),
+    0 22px 48px rgba(36, 48, 45, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.egg-button {
+  box-shadow: 0 8px 0 rgba(36, 48, 45, 0.13);
+  transform: translateY(0);
+}
+
+.egg-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 5px 0 rgba(36, 48, 45, 0.12);
+}
+
+.egg-float {
+  animation: egg-float 4.8s ease-in-out infinite;
+}
+
+.egg-wiggle {
+  animation: egg-wiggle 3.6s ease-in-out infinite;
+  transform-origin: 50% 85%;
+}
+
+.park-screen {
+  isolation: isolate;
+}
+
+.park-skin-sunny {
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 209, 102, 0.12) 0 0.7rem, transparent 0.7rem 1.65rem),
+    linear-gradient(180deg, #fff1cc, #f3fff7);
+}
+
+.park-skin-mint {
+  background:
+    repeating-linear-gradient(135deg, rgba(116, 215, 165, 0.13) 0 0.7rem, transparent 0.7rem 1.65rem),
+    linear-gradient(180deg, #effff6, #fff9e6);
+}
+
+.park-skin-candy {
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 122, 107, 0.12) 0 0.7rem, transparent 0.7rem 1.65rem),
+    linear-gradient(180deg, #fff3ef, #fff9e6 55%, #f5fff8);
+}
+
+.park-header {
+  position: sticky;
+  top: 0.55rem;
+  z-index: 35;
+  margin-inline: -0.15rem;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 1.7rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 12px 32px rgba(36, 48, 45, 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.park-icon-button {
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  background: linear-gradient(180deg, #ffffff, #fff0c7);
+}
+
+.park-balance-card {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.98);
+  background:
+    linear-gradient(135deg, rgba(255, 122, 107, 0.96), rgba(255, 184, 74, 0.98) 45%, rgba(116, 215, 165, 0.96)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 0.45rem, transparent 0.45rem 1rem);
+  box-shadow:
+    0 12px 0 rgba(255, 122, 107, 0.16),
+    0 24px 54px rgba(181, 93, 38, 0.22);
+}
+
+.park-balance-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -1.8rem -2.2rem -1.8rem;
+  height: 4.6rem;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.36) 0 1.1rem, transparent 1.1rem 2.2rem);
+  transform: rotate(-2deg);
+}
+
+.park-ticket-dots {
+  position: absolute;
+  inset: 0.85rem;
+  border: 2px dashed rgba(255, 255, 255, 0.38);
+  border-radius: 1.55rem;
+  pointer-events: none;
+}
+
+.park-coin-glow {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.06));
+}
+
+.park-eyebrow {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: rgba(36, 48, 45, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+}
+
+.park-hero-buddy {
+  margin-top: -0.2rem;
+  filter: drop-shadow(0 14px 20px rgba(36, 48, 45, 0.22));
+}
+
+.park-mini-stat {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  background: rgba(36, 48, 45, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.park-status-card,
+.park-calendar-card,
+.park-shop-card {
+  border-color: rgba(255, 255, 255, 0.98);
+}
+
+.park-status-card {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(255, 252, 237, 0.9)),
+    linear-gradient(135deg, rgba(116, 215, 165, 0.18), rgba(255, 209, 102, 0.16));
+}
+
+.park-primary-button,
+.park-tab-active {
+  box-shadow: 0 6px 0 rgba(36, 48, 45, 0.13);
+}
+
+.park-primary-button {
+  background: linear-gradient(180deg, #8be5b3, #57c78e);
+}
+
+.park-calendar-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 253, 243, 0.9));
+}
+
+.park-shop-card {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 244, 210, 0.9)),
+    repeating-linear-gradient(90deg, rgba(255, 122, 107, 0.1) 0 0.55rem, transparent 0.55rem 1.35rem);
+}
+
+.park-day {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 -2px 0 rgba(36, 48, 45, 0.04);
+}
+
+.park-nav {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 249, 233, 0.94));
+}
+
+.park-tab {
+  position: relative;
+}
+
+.park-tab-active {
+  background: linear-gradient(180deg, #24302d, #344842);
+}
+
+.park-tab-active::after {
+  content: "";
+  position: absolute;
+  bottom: 0.35rem;
+  width: 0.36rem;
+  height: 0.36rem;
+  border-radius: 999px;
+  background: var(--park-yellow);
+}
+
+.park-tab-idle {
+  background: transparent;
+}
+
+.park-check-row {
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: linear-gradient(180deg, #fffdf5, #f4fff8);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  border-color: rgba(255, 209, 102, 0.55) !important;
+  background: linear-gradient(180deg, #fffefa, #f7fff9) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--park-mint) !important;
+  box-shadow: 0 0 0 4px rgba(116, 215, 165, 0.18);
+}
+
+.safe-bottom {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+.number-pop {
+  animation: number-pop 520ms ease both;
+}
+
+.slide-up {
+  animation: slide-up 360ms ease both;
+}
+
+.mood-flip {
+  animation: mood-flip 1.55s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+.mood-avatar {
+  animation-duration: 1.55s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+
+.mood-avatar-expect {
+  animation-name: mood-expect-out;
+}
+
+.mood-avatar-excited {
+  animation-name: mood-excited-in;
+}
+
+.mood-glow {
+  animation: mood-glow 1.55s ease both;
+}
+
+.random-task-burst {
+  animation: random-task-burst 1.25s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+}
+
+@keyframes number-pop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.3;
+  }
+  55% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes egg-float {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+}
+
+@keyframes egg-wiggle {
+  0%, 100% {
+    transform: rotate(-4deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.03);
+  }
+}
+
+@keyframes mood-flip {
+  0% {
+    opacity: 0;
+    transform: scale(0.78) translateY(16px);
+  }
+  16%, 82% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08) translateY(-10px);
+  }
+}
+
+@keyframes mood-expect-out {
+  0%, 34% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-4deg);
+  }
+  52%, 100% {
+    opacity: 0;
+    transform: scale(0.76) rotate(-12deg);
+  }
+}
+
+@keyframes mood-excited-in {
+  0%, 38% {
+    opacity: 0;
+    transform: scale(0.72) rotate(12deg);
+  }
+  58% {
+    opacity: 1;
+    transform: scale(1.14) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(2deg);
+  }
+}
+
+@keyframes mood-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  42% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes random-task-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.52) rotate(-18deg);
+  }
+  38% {
+    opacity: 1;
+    transform: scale(1.08) rotate(8deg);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1) rotate(-3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.16) rotate(0deg);
+  }
+}
