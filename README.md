@@ -22,13 +22,6 @@
 - 视觉采用蛋仔乐园风格，内置开心、悲伤、期待、偷看、兴奋等表情素材。
 - 数据使用 PostgreSQL 持久化，部署使用 Docker Compose。
 
-## 默认账号
-
-- `dad` / `pangpang123`
-- `mom` / `pangpang123`
-
-上线后建议尽快增加改密能力，或直接在数据库中替换默认密码哈希。
-
 ## 本地开发
 
 ```bash
@@ -49,16 +42,6 @@ npm run dev
 ```bash
 docker compose -f docker-compose.prod.yml up -d --build
 ```
-
-应用默认暴露到宿主机 `127.0.0.1:3100`，再由 OpenResty/Nginx 反代到域名。
-
-当前线上域名：
-
-```text
-https://pp.herotop.cn/
-```
-
-更多说明见 [deploy/tencent-cloud.md](./deploy/tencent-cloud.md)。
 
 ## 1.0 范围
 
